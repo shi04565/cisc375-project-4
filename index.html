@@ -1,43 +1,38 @@
 <html>
 <head>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+	<meta charset="utf-8" />
+	<title>Geocoding control</title>
+	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+	<!-- Load Leaflet from CDN -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
 	integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
 	crossorigin=""/>
-	<link rel = "stylesheet" href = "leaf.css"/>
-	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-	integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+	integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
 	crossorigin=""></script>
-   
-  <script>
-	function Init(){
-		var mymap = L.map('mapid').setView([44.949642,-93.093124], 11);
-		
-		mymap.setMaxBounds([[44.892444,-93.206001],[44.991957,-93.005204]]);
-		
-		L.tileLayer('http://mt0.google.cn/vt/lyrs=m@160000000&hl=eng&gl=CN&src=app&y={y}&x={x}&z={z}&s=Ga', {
-			attribution: '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-			maxZoom: 18,
-			minZoom: 11,
-			id: 'mapbox/streets-v11',
-			accessToken: 'pk.eyJ1IjoiZHUwMDUxNjIiLCJhIjoiY2szdzY5YmhjMHE2dTNnbzIwYnJsdTJhdSJ9.FFgaw3eAe8gSuxnqk9vz7Q'
-		}).addTo(mymap);
-		var marker = L.marker([44.949642,-93.093124]).addTo(mymap);
 
-
+	<script src="pro4.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script>
 	
-	}
-  </script>
+	
+	</script>
 
+	<style>
+		body { margin:0; padding:0; }
+		#map { position: absolute; top:100; bottom:0; right:0; left:0; height: 550px;
+		width: 550px;}
+		input{ width:300px;}
+		
+	</style>
 </head>
-
 <body onload="Init()">
- <div id="mapid"></div>
- 
- 
-
+	<div id="map"></div>
+	<div id="app">
+		<input v-model="message" placeholder= "enter">
+		<bottom type="bottom" @click="submit">submit</bottom>
+	</div>
 
 </body>
-
-
-
 </html>
