@@ -3,7 +3,7 @@
 	<meta charset="utf-8" />
 	<title>Geocoding control</title>
 	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-
+	<script type="application/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	<!-- Load Leaflet from CDN -->
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
 	integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
@@ -31,7 +31,102 @@
 	<div id="map"></div>
 	<div id="app">
 		<input v-model="message" placeholder= "enter">
-		<bottom type="bottom" @click="submit">submit</bottom>
+		<button type="button" @click="submit">search</button>
+	</div>
+	<div id="table">
+		<input v-model="startdate" placeholder= "start date">
+		<input v-model="enddate" placeholder= "end date">
+		<input v-model="starttime" placeholder= "start time">
+		<input v-model="endtime" placeholder= "end time">	
+		
+		<input type="checkbox" id="Murder" value="Murder" v-model="checkedNames">
+		<label for="Murder">Murder</label>
+		<input type="checkbox" id="Rape" value="Rape" v-model="checkedNames">
+		<label for="Rape">Rape</label>
+		<input type="checkbox" id="Robbery" value="Robbery" v-model="checkedNames">
+		<label for="Robbery">Robbery</label>
+		<input type="checkbox" id="Aggravated Assault" value="Aggravated Assault" v-model="checkedNames">
+		<label for="Aggravated Assault">Aggravated Assault</label>
+		<input type="checkbox" id="Burglary" value="Burglary" v-model="checkedNames">
+		<label for="Burglary">Burglary</label>
+		<input type="checkbox" id="Att. Burglary" value="Att. Burglary" v-model="checkedNames">
+		<label for="Att. Burglary">Att. Burglary</label>
+		<input type="checkbox" id="Theft" value="Theft" v-model="checkedNames">
+		<label for="Theft">Theft</label>
+		<input type="checkbox" id="Motor Vehicle Theft" value="Motor Vehicle Theft" v-model="checkedNames">
+		<label for="Motor Vehicle Theft">Motor Vehicle Theft</label>
+		<input type="checkbox" id="Att. Motor Vehicle Theft" value="Att. Motor Vehicle Theft" v-model="checkedNames">
+		<label for="Att. Motor Vehicle Theft">Att. Motor Vehicle Theft</label>
+		<input type="checkbox" id="Asasult" value="Asasult" v-model="checkedNames">
+		<label for="Asasult">Asasult</label>
+		<input type="checkbox" id="Arson" value="Arson" v-model="checkedNames">
+		<label for="Arson">Arson</label>
+		<input type="checkbox" id="Criminal Damage to Property" value="Criminal Damage to Property" v-model="checkedNames">
+		<label for="Criminal Damage to Property">Criminal Damage to Property</label>
+		<input type="checkbox" id="Graffiti" value="Graffiti" v-model="checkedNames">
+		<label for="Graffiti">Graffiti</label>
+		<input type="checkbox" id="Narcotics" value="Narcotics" v-model="checkedNames">
+		<label for="Narcotics">Narcotics</label>
+		<input type="checkbox" id="Weapons" value="Weapons" v-model="checkedNames">
+		<label for="Weapons">Weapons</label>
+		<input type="checkbox" id="Proactive Police Visit" value="Proactive Police Visit" v-model="checkedNames">
+		<label for="Proactive Police Visit">Proactive Police Visit</label>
+		<input type="checkbox" id="Community Engagement Event" value="Community Engagement Event" v-model="checkedNames">
+		<label for="Community Engagement Event">Community Engagement Event</label>
+
+		<input type="checkbox" id="Conway/Battlecreek/Highwood" value="Conway/Battlecreek/Highwood" v-model="neighborhoods">
+		<label for="Conway/Battlecreek/Highwood">Conway/Battlecreek/Highwood</label>
+		<input type="checkbox" id="Greater East Side" value="Greater East Side" v-model="neighborhoods">
+		<label for="Greater East Side">Greater East Side</label>
+		<input type="checkbox" id="West Side" value="West Side" v-model="neighborhoods">
+		<label for="West Side">West Side</label>
+		<input type="checkbox" id="Dayton's Bluff" value="Dayton's Bluff" v-model="neighborhoods">
+		<label for="Dayton's Bluff">Dayton's Bluff</label>
+		<input type="checkbox" id="Payne/Phalen" value="Payne/Phalen" v-model="neighborhoods">
+		<label for="Payne/Phalen">Payne/Phalen</label>
+		<input type="checkbox" id="North End" value="North End" v-model="neighborhoods">
+		<label for="North End">North End</label>
+		<input type="checkbox" id="Thomas/Dale(Frogtown)" value="Thomas/Dale(Frogtown)" v-model="neighborhoods">
+		<label for="Thomas/Dale(Frogtown)">Thomas/Dale(Frogtown)</label>
+		<input type="checkbox" id="Summit/University" value="Summit/University" v-model="neighborhoods">
+		<label for="Summit/University">Summit/University</label>
+		<input type="checkbox" id="West Seventh" value="West Seventh" v-model="neighborhoods">
+		<label for="West Seventh">West Seventh</label>
+		<input type="checkbox" id="Como" value="Como" v-model="neighborhoods">
+		<label for="Como">Como</label>
+		<input type="checkbox" id="Hamline/Midway" value="Hamline/Midway" v-model="neighborhoods">
+		<label for="Hamline/Midway">Hamline/Midway</label>
+		<input type="checkbox" id="St. Anthony" value="St. Anthony" v-model="neighborhoods">
+		<label for="St. Anthony">St. Anthony</label>
+		<input type="checkbox" id="Union Park" value="Union Park" v-model="neighborhoods">
+		<label for="Union Park">Union Park</label>
+		<input type="checkbox" id="Macalester-Groveland" value="Macalester-Groveland" v-model="neighborhoods">
+		<label for="Macalester-Groveland">Macalester-Groveland</label>
+		<input type="checkbox" id="Highland" value="Highland" v-model="neighborhoods">
+		<label for="Highland">Highland</label>
+		<input type="checkbox" id="Summit Hill" value="Summit Hill" v-model="neighborhoods">
+		<label for="Summit Hill">Summit Hill</label>
+		<input type="checkbox" id="Capitol River" value="Capitol River" v-model="neighborhoods">
+		<label for="Capitol River">Capitol River</label>
+		<table>
+			<thead>
+				<tr>
+					<th v-for="head in tableHead">{{head}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="data in tablelist">
+					<td>{{data.date}}</td>
+					<td>{{data.time}}</td>
+					<td>{{data.code}}</td>
+					<td>{{data.incident}}</td>
+					<td>{{data.police_grid}}</td>
+					<td>{{data.neighborhood_number}}</td>
+					<td>{{data.block}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<button type="button" @click="search">submit</button>
 	</div>
 
 </body>

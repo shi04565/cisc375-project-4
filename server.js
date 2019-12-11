@@ -14,6 +14,9 @@ var db_filename = path.join(__dirname, 'db', 'stpaul_crime.sqlite3');
 var app = express();
 var port = 8000;
 
+var cors = require("cors");
+app.use(cors());
+
 // open usenergy.sqlite3 database
 var db = new sqlite3.Database(db_filename, (err) => {
     if (err) {
