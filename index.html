@@ -11,6 +11,12 @@
 	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
 	integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
 	crossorigin=""></script>
+	
+	<!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="stylesheet" href="css/skeleton.css"/>
+	<link rel="stylesheet" href="css/normalize.css"/>
+	<link rel="stylesheet" href="css/mycss.css"/>
 
 	<script src="pro4.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -18,116 +24,83 @@
 	
 	
 	</script>
-
-	<style>
-		body { margin:0; padding:0; }
-		#map { position: absolute; top:100; bottom:0; right:0; left:0; height: 550px;
-		width: 550px;}
-		input{ width:300px;}
-		
-	</style>
 </head>
 <body onload="Init()">
-	<div id="map"></div>
-	<div id="app">
-		<input v-model="message" placeholder= "enter">
-		<button type="button" @click="submit">search</button>
-	</div>
-	<div id="table">
-		<input v-model="startdate" placeholder= "start date">
-		<input v-model="enddate" placeholder= "end date">
-		<input v-model="starttime" placeholder= "start time">
-		<input v-model="endtime" placeholder= "end time">	
+	<div class="container">
+		<h1 style="color:#ff8503;">St. Paul Crime Website</h1>
+		<a href="/aboutus.html" style="margin-left:750px;">About the Project</a>
 		
-		<input type="checkbox" id="Murder" value="Murder" v-model="checkedNames">
-		<label for="Murder">Murder</label>
-		<input type="checkbox" id="Rape" value="Rape" v-model="checkedNames">
-		<label for="Rape">Rape</label>
-		<input type="checkbox" id="Robbery" value="Robbery" v-model="checkedNames">
-		<label for="Robbery">Robbery</label>
-		<input type="checkbox" id="Aggravated Assault" value="Aggravated Assault" v-model="checkedNames">
-		<label for="Aggravated Assault">Aggravated Assault</label>
-		<input type="checkbox" id="Burglary" value="Burglary" v-model="checkedNames">
-		<label for="Burglary">Burglary</label>
-		<input type="checkbox" id="Att. Burglary" value="Att. Burglary" v-model="checkedNames">
-		<label for="Att. Burglary">Att. Burglary</label>
-		<input type="checkbox" id="Theft" value="Theft" v-model="checkedNames">
-		<label for="Theft">Theft</label>
-		<input type="checkbox" id="Motor Vehicle Theft" value="Motor Vehicle Theft" v-model="checkedNames">
-		<label for="Motor Vehicle Theft">Motor Vehicle Theft</label>
-		<input type="checkbox" id="Att. Motor Vehicle Theft" value="Att. Motor Vehicle Theft" v-model="checkedNames">
-		<label for="Att. Motor Vehicle Theft">Att. Motor Vehicle Theft</label>
-		<input type="checkbox" id="Asasult" value="Asasult" v-model="checkedNames">
-		<label for="Asasult">Asasult</label>
-		<input type="checkbox" id="Arson" value="Arson" v-model="checkedNames">
-		<label for="Arson">Arson</label>
-		<input type="checkbox" id="Criminal Damage to Property" value="Criminal Damage to Property" v-model="checkedNames">
-		<label for="Criminal Damage to Property">Criminal Damage to Property</label>
-		<input type="checkbox" id="Graffiti" value="Graffiti" v-model="checkedNames">
-		<label for="Graffiti">Graffiti</label>
-		<input type="checkbox" id="Narcotics" value="Narcotics" v-model="checkedNames">
-		<label for="Narcotics">Narcotics</label>
-		<input type="checkbox" id="Weapons" value="Weapons" v-model="checkedNames">
-		<label for="Weapons">Weapons</label>
-		<input type="checkbox" id="Proactive Police Visit" value="Proactive Police Visit" v-model="checkedNames">
-		<label for="Proactive Police Visit">Proactive Police Visit</label>
-		<input type="checkbox" id="Community Engagement Event" value="Community Engagement Event" v-model="checkedNames">
-		<label for="Community Engagement Event">Community Engagement Event</label>
-
-		<input type="checkbox" id="Conway/Battlecreek/Highwood" value="Conway/Battlecreek/Highwood" v-model="neighborhoods">
-		<label for="Conway/Battlecreek/Highwood">Conway/Battlecreek/Highwood</label>
-		<input type="checkbox" id="Greater East Side" value="Greater East Side" v-model="neighborhoods">
-		<label for="Greater East Side">Greater East Side</label>
-		<input type="checkbox" id="West Side" value="West Side" v-model="neighborhoods">
-		<label for="West Side">West Side</label>
-		<input type="checkbox" id="Dayton's Bluff" value="Dayton's Bluff" v-model="neighborhoods">
-		<label for="Dayton's Bluff">Dayton's Bluff</label>
-		<input type="checkbox" id="Payne/Phalen" value="Payne/Phalen" v-model="neighborhoods">
-		<label for="Payne/Phalen">Payne/Phalen</label>
-		<input type="checkbox" id="North End" value="North End" v-model="neighborhoods">
-		<label for="North End">North End</label>
-		<input type="checkbox" id="Thomas/Dale(Frogtown)" value="Thomas/Dale(Frogtown)" v-model="neighborhoods">
-		<label for="Thomas/Dale(Frogtown)">Thomas/Dale(Frogtown)</label>
-		<input type="checkbox" id="Summit/University" value="Summit/University" v-model="neighborhoods">
-		<label for="Summit/University">Summit/University</label>
-		<input type="checkbox" id="West Seventh" value="West Seventh" v-model="neighborhoods">
-		<label for="West Seventh">West Seventh</label>
-		<input type="checkbox" id="Como" value="Como" v-model="neighborhoods">
-		<label for="Como">Como</label>
-		<input type="checkbox" id="Hamline/Midway" value="Hamline/Midway" v-model="neighborhoods">
-		<label for="Hamline/Midway">Hamline/Midway</label>
-		<input type="checkbox" id="St. Anthony" value="St. Anthony" v-model="neighborhoods">
-		<label for="St. Anthony">St. Anthony</label>
-		<input type="checkbox" id="Union Park" value="Union Park" v-model="neighborhoods">
-		<label for="Union Park">Union Park</label>
-		<input type="checkbox" id="Macalester-Groveland" value="Macalester-Groveland" v-model="neighborhoods">
-		<label for="Macalester-Groveland">Macalester-Groveland</label>
-		<input type="checkbox" id="Highland" value="Highland" v-model="neighborhoods">
-		<label for="Highland">Highland</label>
-		<input type="checkbox" id="Summit Hill" value="Summit Hill" v-model="neighborhoods">
-		<label for="Summit Hill">Summit Hill</label>
-		<input type="checkbox" id="Capitol River" value="Capitol River" v-model="neighborhoods">
-		<label for="Capitol River">Capitol River</label>
-		<table>
-			<thead>
-				<tr>
-					<th v-for="head in tableHead">{{head}}</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="data in tablelist">
-					<td>{{data.date}}</td>
-					<td>{{data.time}}</td>
-					<td>{{data.code}}</td>
-					<td>{{data.incident}}</td>
-					<td>{{data.police_grid}}</td>
-					<td>{{data.neighborhood_number}}</td>
-					<td>{{data.block}}</td>
-				</tr>
-			</tbody>
-		</table>
-		<button type="button" @click="search">submit</button>
+		<div id="app">
+			<input id="search" v-model="message" placeholder= "enter" class="searchbar" name="Map">
+			<button type="button" @click="submit" class="button-primary">search</button>
+		</div>
+		<div>
+			<div id="map"></div>
+			<div id="table">
+				<div id="p2">
+					
+					<input class="inputbar" v-model="startdate" placeholder= "start date">
+					<input class="inputbar" v-model="enddate" placeholder= "end date">
+					<input class="inputbar" v-model="starttime" placeholder= "start time">
+					<input class="inputbar" v-model="endtime" placeholder= "end time">
+					<span style="color:#9f07f7;font-size:2rem;"><b><br/>Crime type:</b></span>
+					<label for="Murder"><input type="checkbox" style="vertical-align:middle;" id="Murder" value="Murder" v-model="checkedNames">Murder</label>
+					<label for="Rape"><input type="checkbox" id="Rape" value="Rape" v-model="checkedNames">Rape</label>
+					<label for="Robbery"><input type="checkbox" id="Robbery" value="Robbery" v-model="checkedNames">Robbery</label>
+					<label for="Aggravated Assault"><input type="checkbox" id="Aggravated Assault" value="Aggravated Assault" v-model="checkedNames">Aggravated Assault</label>
+					<label for="Burglary"><input type="checkbox" id="Burglary" value="Burglary" v-model="checkedNames">Burglary</label>
+					<label for="Theft"><input type="checkbox" id="Theft" value="Theft" v-model="checkedNames">Theft</label>
+					<label for="Motor Vehicle Theft"><input type="checkbox" id="Motor Vehicle Theft" value="Motor Vehicle Theft" v-model="checkedNames">Motor Vehicle Theft</label>
+					<label for="Assault"><input type="checkbox" id="Assault" value="Assault" v-model="checkedNames">Assault</label>
+					<label for="Arson"><input type="checkbox" id="Arson" value="Arson" v-model="checkedNames">Arson</label>				<label for="Criminal Damage to Property"><input type="checkbox" id="Criminal Damage to Property" value="Criminal Damage to Property" v-model="checkedNames">Criminal Damage to Property</label>
+					<label for="Graffiti"><input type="checkbox" id="Graffiti" value="Graffiti" v-model="checkedNames">Graffiti</label>
+					<label for="Narcotics"><input type="checkbox" id="Narcotics" value="Narcotics" v-model="checkedNames">Narcotics</label>
+					<label for="Weapons"><input type="checkbox" id="Weapons" value="Weapons" v-model="checkedNames">Weapons</label>
+					<label for="Proactive Police Visit"><input type="checkbox" id="Proactive Police Visit" value="Proactive Police Visit" v-model="checkedNames">Proactive Police Visit</label>
+					<label for="Community Engagement Event"><input type="checkbox" id="Community Engagement Event" value="Community Engagement Event" v-model="checkedNames">Community Engagement Event</label>
+					<span style="color:#9f07f7;font-size:2rem;"><b>Neighborhoods:</b></span>
+					<label for="Conway/Battlecreek/Highwood"><input type="checkbox" id="Conway/Battlecreek/Highwood" value="Conway/Battlecreek/Highwood" v-model="neighborhoods">Conway/Battlecreek/Highwood</label>
+					<label for="Greater East Side"><input type="checkbox" id="Greater East Side" value="Greater East Side" v-model="neighborhoods">Greater East Side</label>
+					<label for="West Side"><input type="checkbox" id="West Side" value="West Side" v-model="neighborhoods">West Side</label>
+					<label for="Dayton's Bluff"><input type="checkbox" id="Dayton's Bluff" value="Dayton's Bluff" v-model="neighborhoods">Dayton's Bluff</label>
+					<label for="Payne/Phalen"><input type="checkbox" id="Payne/Phalen" value="Payne/Phalen" v-model="neighborhoods">Payne/Phalen</label>
+					<label for="North End"><input type="checkbox" id="North End" value="North End" v-model="neighborhoods">North End</label>
+					<label for="Thomas/Dale(Frogtown)"><input type="checkbox" id="Thomas/Dale(Frogtown)" value="Thomas/Dale(Frogtown)" v-model="neighborhoods">Thomas/Dale(Frogtown)</label>
+					<label for="Summit/University"><input type="checkbox" id="Summit/University" value="Summit/University" v-model="neighborhoods">Summit/University</label>
+					<label for="West Seventh"><input type="checkbox" id="West Seventh" value="West Seventh" v-model="neighborhoods">West Seventh</label>
+					<label for="Como"><input type="checkbox" id="Como" value="Como" v-model="neighborhoods">Como</label>
+					<label for="Hamline/Midway"><input type="checkbox" id="Hamline/Midway" value="Hamline/Midway" v-model="neighborhoods">Hamline/Midway</label>
+					<label for="St. Anthony"><input type="checkbox" id="St. Anthony" value="St. Anthony" v-model="neighborhoods">St. Anthony</label>
+					<label for="Union Park"><input type="checkbox" id="Union Park" value="Union Park" v-model="neighborhoods">Union Park</label>
+					<label for="Macalester-Groveland"><input type="checkbox" id="Macalester-Groveland" value="Macalester-Groveland" v-model="neighborhoods">Macalester-Groveland</label>
+					<label for="Highland"><input type="checkbox" id="Highland" value="Highland" v-model="neighborhoods">Highland</label>
+					<label for="Summit Hill"><input type="checkbox" id="Summit Hill" value="Summit Hill" v-model="neighborhoods">Summit Hill</label>
+					<label for="Capitol River"><input type="checkbox" id="Capitol River" value="Capitol River" v-model="neighborhoods">Capitol River</label>
+				</div>
+				<button id="subbutton" type="button" class="button-primary" @click="search">submit</button>
+				<table id="table2">
+					<thead>
+						<tr>
+							<th v-for="head in tableHead">&nbsp;&nbsp;&nbsp;{{head}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+						<tr v-for="data in tablelist">
+	
+							<td>{{data.date}}</td>
+							<td>{{data.time}}</td>
+							<td>{{data.code}}</td>
+							<td>{{data.incident}}</td>
+							<td>{{data.police_grid}}</td>
+							<td>{{data.neighborhood_number}}</td>
+							<td>{{data.block}}</td>					
+						</tr>
+					</tbody>
+				</table>
+				
+			</div>
+		</div>
 	</div>
-
 </body>
 </html>

@@ -1,0 +1,67 @@
+
+body { 
+	margin:0; padding:0; 
+	background-image:url('https://live.staticflickr.com/4073/4901401714_5908cdc78f_b.jpg'); 
+	background-repeat:no-repeat; 
+	background-size:1800px;
+}
+	
+#map { 
+	position: relative;
+	top:20; 
+	bottom:0; 
+	right:0; 
+	left:0; 
+	height: 550px; 
+	width: 550px;
+}
+
+
+#search{
+	width:318px;
+	
+}
+
+.tablepos{
+	position: relative; 
+	top:20; 
+	bottom:0; 
+	right:0; 
+	left:10;
+}
+
+table {
+	display:block;
+	height:200px;
+	overflow:scroll;
+	
+}
+
+#table2 {
+	color:#ed574c;
+	margin-top:50px;
+	margin-left:10px;
+	background-color:#f0f1f5;
+}
+
+#p2 {
+	margin-top:-530px;
+	margin-left:570px;
+	background-color:#f0f1f5;
+	height:550px;
+	overflow:scroll;
+	
+}
+
+.inputbar{
+	width:150px;
+}
+
+#subbutton{
+	margin-left:845px;
+	
+}
+
+.searchbar{
+	height:38px;
+}
