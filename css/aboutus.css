@@ -1,0 +1,59 @@
+
+body{
+	background-color:#e4eef2;
+	
+}
+
+#link{
+	text-decoration:none;
+}
+
+#head{
+	font-family:Adele;
+	color:#5b5e5a;
+	border-bottom-color:#fcb138;
+	border-bottom-style:solid;
+	border-bottom-width:2px;
+	padding-bottom:5px;
+	
+}
+
+.paragraph{
+	font-family:Arial;
+	font-size:1.7rem;
+}
+
+.photo{
+	width:auto;
+	height:390px;
+	
+}
+
+#du {
+	font-family:Georgia;
+	background-color:#ebe6fc;
+	border:2px dotted #d7b9fa;
+}
+
+#shi{
+	font-family:Georgia;
+	background-color:#ebe6fc;
+	border:2px dotted #d7b9fa;
+}
+
+.font{
+	font-family:fantasy;
+	font-size:2.1rem;
+}
+
+#video{
+	height:370px;
+	width:460px;
+}
+
+.interestingfacts{
+	font-family:Arial;
+	font-size:1.7rem;
+	border:2px dashed #e8af46;
+}
+

@@ -1,0 +1,59 @@
+body {
+	background-image:url('https://live.staticflickr.com/4073/4901401714_5908cdc78f_b.jpg'); 
+	background-repeat:no-repeat;
+	background-size:1900px 600px;
+}
+
+#map { 
+	position: relative;
+	left:195px;
+	top:20px;
+	height:500px; 
+	width:850px;
+}
+
+.search{
+	width:600px;
+	height:35px;
+}
+
+.datetime{
+	position:relative;
+	top:30px;
+}
+
+.checkedbox{
+	border:1px solid #599cff;
+	position:relative;
+	top:50px;
+	background-color:#f0f0f0;
+	height:100px;
+	width:850px;
+	font-family:Arial;
+	font-size:1.7rem;
+	
+}
+
+#listcrime{
+	display:block;
+	overflow:scroll;
+	height:200px;
+	position:relative;
+	top:90px;
+	width:870px;
+}
+
+#subbutton{
+	position:relative;
+	top:60px;
+	left:740px;
+}
+
+.tuli {
+	background-color:#9ce4ff;
+	height:55px;
+	width:55px;
+	position:relative;
+	top:62px;
+}
+

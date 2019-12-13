@@ -1,0 +1,31 @@
+{
+    "name": "Dynamic_Web_Application",
+    "version": "0.0.0",
+    "description": "Dynamic_Web_Application using Node JS",
+    "author": {
+        "name": "Haoyuan Du",
+        "email": "du005162@stthomas.edu"
+    },
+    "contributors": [
+        {
+            "name": "Haoyi Shi",
+            "email": "shi04565@stthomas.edu"
+        },
+        {
+            "name": "Haoyuan Du",
+            "email": "du005162@stthomas.edu"
+        }
+    ],
+    "main": "server.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/duhaoyuan1111/project4_DynamicWebApplication"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "mssql": "^5.1.0",
+        "sqlite3": "^4.1.0"
+        "cors": "^2.8.5"
+        "leaflet": "^1.6.0"
+    }
+}

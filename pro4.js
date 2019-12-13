@@ -1,5 +1,5 @@
-function Init(){
-
+function Init(crime_api_url){
+	console.log(crime_api_url);
 	var map = L.map('map').setView([44.949642,-93.093124], 11);
 	map.setMaxBounds([[44.892444,-93.206001],[44.991957,-93.005204]]);
 
@@ -15,11 +15,11 @@ function Init(){
 	var ladLong=map.getCenter();
 	
 	var MAP=new Vue({
-	
 		el:"#app",
 		data:{
 			message:"",
 			stpaulcrimes:[],
+			crimesBackUp:[],
 			centerOfNeighbor:[]
 		},
 		methods:{
@@ -32,7 +32,7 @@ function Init(){
 				}else{
 					var xhttp = new XMLHttpRequest();
 					console.log(temp[0]);
-					var url= 'https://nominatim.openstreetmap.org/search?street='+temp[0]+"&city=St Paul&format=json";
+					var url= 'https://nominatim.openstreetmap.org/search?street='+temp[0]+"&city=St Paul&state=Minnesota&format=json";
 					xhttp.open("GET",url);
 					xhttp.send();
 					xhttp.onreadystatechange=function(){
@@ -53,53 +53,15 @@ function Init(){
 		
 	});
 	
-	function insideArea( view_bounds,  nei_lat,  nei_lng){
+	function insideORoutside(view_bounds, nei_lat, nei_lng){
 		if(view_bounds._northEast.lat >= nei_lat && view_bounds._southWest.lat <= nei_lat && view_bounds._northEast.lng >= nei_lng && view_bounds._southWest.lng <= nei_lng){
 			return true;
 		}
 		
 		
 	}
-	map.on("moveend",function(){	
-		MAP.$data.message = map.getCenter().lat+","+ map.getCenter().lng;
-		var tem = [];
 
-		for (var key in MAP.$data.stpaulcrimes) {
-
-			
-			var nei_lat = MAP.$data.centerOfNeighbor[MAP.$data.stpaulcrimes[key].neighborhood_number-1][0];
-			var nei_lng = MAP.$data.centerOfNeighbor[MAP.$data.stpaulcrimes[key].neighborhood_number-1][1];
-			var view_bounds = map.getBounds();
-
-			if (insideArea(view_bounds, nei_lat, nei_lng)) {
-				tem.push(MAP.$data.stpaulcrimes[key]);
-				
-				//console.log(tem);
-				var old = MAP.$data.stpaulcrimes[key].time;
-				var NEW = old.split(".");
-				tem[tem.length-1].time = NEW[0];
-				
-			}
-		}
-		console.log(tem);
-		TABLE.$data.tablelist = tem;
-		for(var b= 0;b<TABLE.$data.tablelist.length;b++){
-			var number = parseInt(TABLE.$data.tablelist[b].neighborhood_number)-1;
-			TABLE.$data.tablelist.neighborhood_number = neighborDownload[number];
-			var codeName;
-			for(var a =0; a<codeDownload.length;a++){
-				if("C"+TABLE.$data.tablelist[b].code == codeDownload[a]){
-					codeName = codeDownloadName[a];
-				}
-			}
-			TABLE.$data.tablelist[b].code = codeName;
-		}
-		
-		
-	});
 	
-	
-
 	var TABLE = new Vue({
 		el:"#table",
 		data:{
@@ -112,14 +74,15 @@ function Init(){
 			tablelist:[],
 			selectTable:[],
 			backup:[],
-			tableHead:['date','time','code','incident','police_grid','neighborhood_number','block']
+			selected:[],
+			tableHead:['date','time','incident','police_grid','neighborhood','block']
 			
 		},
 		methods:{
 			search:function(){
 				if(this.startdate != "" || this.enddate!=""){
 
-					var url = 'http://localhost:8000/incidents?start_date='+this.startdate+'&end_date='+this.enddate;
+					var url = crime_api_url+'/incidents?start_date='+this.startdate+'&end_date='+this.enddate;
 					var tempTable = [];
 					$.getJSON(url,(data)=>{
 						console.log(data)
@@ -143,7 +106,7 @@ function Init(){
 						});
 						//console.log(tempTable);
 						this.tablelist = tempTable;
-						console.log(this.tablelist);
+						//console.log(this.tablelist);
 						if(this.starttime=="" ){
 							this.starttime="00:00:00";
 						}
@@ -160,7 +123,7 @@ function Init(){
 							var put = false;
 							var tabletime = this.tablelist[i].time.split(":");
 							var tabletimeInt = parseInt(tabletime[0]+tabletime[1]+tabletime[2]);
-							var inc = this.tablelist[i].incident.split(",")[0];
+							var inc = this.tablelist[i].incident
 							for(var j = 0; j<this.checkedNames.length;j++){
 								
 								if(inc==this.checkedNames[j]){
@@ -208,6 +171,7 @@ function Init(){
 
 					var temppp = this.endtime.split(":");
 					var end = parseInt(temppp[0]+temppp[1]+temppp[2]);
+					console.log(start+" "+end);
 					for(var i=0; i<this.tablelist.length;i++){
 						var put = false;
 						var tabletime = this.tablelist[i].time.split(":");
@@ -240,10 +204,51 @@ function Init(){
 						
 					}
 					
-					console.log(this.selectTable);
+					//console.log(this.selectTable);
 					this.tablelist = this.selectTable;
 					this.selectTable = [];
 				}
+			},
+			addTo:function(){
+				console.log(this.selected[this.selected.length-1].block);
+				var newAddress = "";
+				if(!isNaN(this.selected[this.selected.length-1].block[0])){
+					
+					var address = this.selected[this.selected.length-1].block.split(" ");
+					console.log(address[0]);
+					var temp = "";
+					for(var i =0; i<address[0].length-1;i++){
+						temp = temp+address[0][i];
+					}
+					temp = temp+"0";
+					for(var i=1; i<address.length;i++){
+						newAddress=newAddress+" "+address[i];
+					}
+					newAddress = temp+newAddress;
+				}else{
+					newAddress = this.selected[this.selected.length-1].block;
+				}
+				console.log(newAddress);
+				var xhttp = new XMLHttpRequest();
+				var url= 'https://nominatim.openstreetmap.org/search?street='+address+"&city=St Paul&state=Minnesota&format=json";
+				$.getJSON(url,(data)=>{
+					if(data[0]==null){
+						alert("Cannot find the address");
+					}else{
+						var myIcon = L.icon({
+							iconUrl: 'https://cdn-images-1.medium.com/max/1200/1*Rgjfdz1KOsITXWI8NaEGog.png',
+							iconSize: [38, 39],
+							iconAnchor: [22, 94],
+							popupAnchor: [-3, -76],
+							/*shadowUrl: 'my-icon-shadow.png',
+							shadowSize: [68, 95],
+							shadowAnchor: [22, 94]*/
+						});						
+						var mark=L.marker([data[0].lat, data[0].lon], {icon: myIcon}).addTo(map).bindPopup(this.selected[this.selected.length-1].date+" ,"+this.selected[this.selected.length-1].time+" ,"+this.selected[this.selected.length-1].code).openPopup();
+						mark.on('mouseover' , function(e){map.removeLayer(mark);});
+					}
+					
+				});			
 			}
 		}
 		
@@ -252,21 +257,68 @@ function Init(){
 	var codeDownloadName = [];
 	var neighborDownload = [];
 	
-	//console.log(codeDownload[0]==null);
-	$.getJSON('http://localhost:8000/codes',(data)=>{
+	map.on("moveend",function(){
+		var templat =  map.getCenter().lat;
+		var templng=map.getCenter().lng;
+		var xhttp = new XMLHttpRequest();
+		var url= 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+templat+'&lon='+templng;
+		xhttp.open("GET",url);
+		xhttp.send();
+		xhttp.onreadystatechange=function(){
+			if(this.readyState==4 && this.status==200){
+				console.log(JSON.parse(xhttp.responseText).address.road);
+				
+				MAP.$data.message = JSON.parse(xhttp.responseText).address.road;
+			}else{
+				console.log("b");
+				MAP.$data.message = map.getCenter().lat+","+ map.getCenter().lng;
+			}
+		}		
+		//MAP.$data.message = map.getCenter().lat+","+ map.getCenter().lng;
+		var tem = [];
+		for (var key in MAP.$data.stpaulcrimes) {
+
+			var lat = MAP.$data.centerOfNeighbor[MAP.$data.crimesBackUp[key].neighborhood_number-1][0];
+			var lng = MAP.$data.centerOfNeighbor[MAP.$data.crimesBackUp[key].neighborhood_number-1][1];
+			var view_bounds = map.getBounds();
+
+			if (insideORoutside(view_bounds, lat, lng)) {
+				tem.push(MAP.$data.stpaulcrimes[key]);
+				var number =parseInt( MAP.$data.crimesBackUp[key].neighborhood_number);
+				MAP.$data.stpaulcrimes[key].neighborhood_number = number;
+				var old = MAP.$data.stpaulcrimes[key].time;
+				var NEW = old.split(".");
+				tem[tem.length-1].time = NEW[0];
+				
+			}
+		}
+		TABLE.$data.tablelist = tem;
+		for(var b= 0;b<TABLE.$data.tablelist.length;b++){
+			TABLE.$data.tablelist[b].neighborhood_number = neighborDownload[parseInt(TABLE.$data.tablelist[b].neighborhood_number)-1];
+			var codeName;
+			for(var a=0; a<codeDownload.length;a++){
+				if("C"+TABLE.$data.tablelist[b].code == codeDownload[a]){
+					TABLE.$data.tablelist[b].code = codeDownloadName[a];
+				}
+			}
+		}
+			
+	});
+	
+	$.getJSON(crime_api_url+'/codes',(data)=>{
 		$.each(data,function(i){
 			codeDownload.push(i);
 			codeDownloadName.push(data[i]);
 		});
 	});	
-	$.getJSON('http://localhost:8000/neighborhoods',(data)=>{
+	$.getJSON(crime_api_url+'/neighborhoods',(data)=>{
 		$.each(data,function(i){
 			neighborDownload.push(data[i]);
 			
 		});
 	});
 	
-	$.getJSON('http://localhost:8000/incidents?start_date=2019-10-01&end_date=2019-10-31',(data)=>{
+	$.getJSON(crime_api_url+'/incidents?start_date=2019-10-01&end_date=2019-10-31',(data)=>{
 		$.each(data,function(i){
 			var old = data[i].time;
 			var NEW = old.split(".");
@@ -280,6 +332,8 @@ function Init(){
 				}
 			}
 			data[i].code = codeName;
+
+
 			TABLE.$data.tablelist.push(data[i]);
 			TABLE.$data.backup.push(data[i]);
 			
@@ -288,8 +342,13 @@ function Init(){
 	});
 	
 	
-	$.getJSON('http://localhost:8000/incidents?start_date=2019-10-01&end_date=2019-10-31',(data)=>{
+	$.getJSON(crime_api_url+'/incidents?start_date=2019-10-01&end_date=2019-10-31',(data111)=>{
+		MAP.$data.crimesBackUp= data111;
+	});
+	
+	$.getJSON(crime_api_url+'/incidents?start_date=2019-10-01&end_date=2019-10-31',(data)=>{
 		MAP.$data.stpaulcrimes = data;
+		
 		//console.log(TABLE.$data.tablelist);
 		var commited = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 		for (var key in data) {
@@ -335,5 +394,3 @@ function Init(){
 	});
 
 }
-
-

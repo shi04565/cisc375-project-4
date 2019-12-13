@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <html>
 <head>
 	<meta charset="utf-8" />
@@ -13,94 +14,155 @@
 	crossorigin=""></script>
 	
 	<!-- CSS
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 	<link rel="stylesheet" href="css/skeleton.css"/>
 	<link rel="stylesheet" href="css/normalize.css"/>
-	<link rel="stylesheet" href="css/mycss.css"/>
+	<link rel="stylesheet" href="css/du.css"/>
 
 	<script src="pro4.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-	<script>
-	
-	
-	</script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="application/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script type="application/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <!-- Prompt JavaScript - this can be moved to a separate .js file if desired -->
+    <script type="application/javascript">
+	function Prompt() {
+            $("#dialog-form").dialog({
+                autoOpen: true,
+                modal: true,
+                width: "360px",
+                buttons: {
+                    "Ok": function() {
+                        var prompt_input = $("#prompt_input");
+                        Init(prompt_input.val());
+                        $(this).dialog("close");
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        }
+    </script>
 </head>
-<body onload="Init()">
+<body onload="Prompt()">
+	<!-- Prompt -->
+    <div id="dialog-form">
+        <label for="name">URL for St. Paul Crime API:</label>
+        <input type="text" id="prompt_input" class="text ui-widget-content ui-corner-all" style="width: 320px;"/>
+    </div>
+    <!-- End: Prompt -->
 	<div class="container">
-		<h1 style="color:#ff8503;">St. Paul Crime Website</h1>
-		<a href="/aboutus.html" style="margin-left:750px;">About the Project</a>
+		<h1 style="color:#ff8503; font-family:Vladimir Script; font-size:6rem;">St. Paul Crime</h1>
+		<a href="aboutus.html" style="margin-left:750px;">About the Project</a>
 		
 		<div id="app">
-			<input id="search" v-model="message" placeholder= "enter" class="searchbar" name="Map">
-			<button type="button" @click="submit" class="button-primary">search</button>
-		</div>
-		<div>
-			<div id="map"></div>
-			<div id="table">
-				<div id="p2">
-					
-					<input class="inputbar" v-model="startdate" placeholder= "start date">
-					<input class="inputbar" v-model="enddate" placeholder= "end date">
-					<input class="inputbar" v-model="starttime" placeholder= "start time">
-					<input class="inputbar" v-model="endtime" placeholder= "end time">
-					<span style="color:#9f07f7;font-size:2rem;"><b><br/>Crime type:</b></span>
-					<label for="Murder"><input type="checkbox" style="vertical-align:middle;" id="Murder" value="Murder" v-model="checkedNames">Murder</label>
-					<label for="Rape"><input type="checkbox" id="Rape" value="Rape" v-model="checkedNames">Rape</label>
-					<label for="Robbery"><input type="checkbox" id="Robbery" value="Robbery" v-model="checkedNames">Robbery</label>
-					<label for="Aggravated Assault"><input type="checkbox" id="Aggravated Assault" value="Aggravated Assault" v-model="checkedNames">Aggravated Assault</label>
-					<label for="Burglary"><input type="checkbox" id="Burglary" value="Burglary" v-model="checkedNames">Burglary</label>
-					<label for="Theft"><input type="checkbox" id="Theft" value="Theft" v-model="checkedNames">Theft</label>
-					<label for="Motor Vehicle Theft"><input type="checkbox" id="Motor Vehicle Theft" value="Motor Vehicle Theft" v-model="checkedNames">Motor Vehicle Theft</label>
-					<label for="Assault"><input type="checkbox" id="Assault" value="Assault" v-model="checkedNames">Assault</label>
-					<label for="Arson"><input type="checkbox" id="Arson" value="Arson" v-model="checkedNames">Arson</label>				<label for="Criminal Damage to Property"><input type="checkbox" id="Criminal Damage to Property" value="Criminal Damage to Property" v-model="checkedNames">Criminal Damage to Property</label>
-					<label for="Graffiti"><input type="checkbox" id="Graffiti" value="Graffiti" v-model="checkedNames">Graffiti</label>
-					<label for="Narcotics"><input type="checkbox" id="Narcotics" value="Narcotics" v-model="checkedNames">Narcotics</label>
-					<label for="Weapons"><input type="checkbox" id="Weapons" value="Weapons" v-model="checkedNames">Weapons</label>
-					<label for="Proactive Police Visit"><input type="checkbox" id="Proactive Police Visit" value="Proactive Police Visit" v-model="checkedNames">Proactive Police Visit</label>
-					<label for="Community Engagement Event"><input type="checkbox" id="Community Engagement Event" value="Community Engagement Event" v-model="checkedNames">Community Engagement Event</label>
-					<span style="color:#9f07f7;font-size:2rem;"><b>Neighborhoods:</b></span>
-					<label for="Conway/Battlecreek/Highwood"><input type="checkbox" id="Conway/Battlecreek/Highwood" value="Conway/Battlecreek/Highwood" v-model="neighborhoods">Conway/Battlecreek/Highwood</label>
-					<label for="Greater East Side"><input type="checkbox" id="Greater East Side" value="Greater East Side" v-model="neighborhoods">Greater East Side</label>
-					<label for="West Side"><input type="checkbox" id="West Side" value="West Side" v-model="neighborhoods">West Side</label>
-					<label for="Dayton's Bluff"><input type="checkbox" id="Dayton's Bluff" value="Dayton's Bluff" v-model="neighborhoods">Dayton's Bluff</label>
-					<label for="Payne/Phalen"><input type="checkbox" id="Payne/Phalen" value="Payne/Phalen" v-model="neighborhoods">Payne/Phalen</label>
-					<label for="North End"><input type="checkbox" id="North End" value="North End" v-model="neighborhoods">North End</label>
-					<label for="Thomas/Dale(Frogtown)"><input type="checkbox" id="Thomas/Dale(Frogtown)" value="Thomas/Dale(Frogtown)" v-model="neighborhoods">Thomas/Dale(Frogtown)</label>
-					<label for="Summit/University"><input type="checkbox" id="Summit/University" value="Summit/University" v-model="neighborhoods">Summit/University</label>
-					<label for="West Seventh"><input type="checkbox" id="West Seventh" value="West Seventh" v-model="neighborhoods">West Seventh</label>
-					<label for="Como"><input type="checkbox" id="Como" value="Como" v-model="neighborhoods">Como</label>
-					<label for="Hamline/Midway"><input type="checkbox" id="Hamline/Midway" value="Hamline/Midway" v-model="neighborhoods">Hamline/Midway</label>
-					<label for="St. Anthony"><input type="checkbox" id="St. Anthony" value="St. Anthony" v-model="neighborhoods">St. Anthony</label>
-					<label for="Union Park"><input type="checkbox" id="Union Park" value="Union Park" v-model="neighborhoods">Union Park</label>
-					<label for="Macalester-Groveland"><input type="checkbox" id="Macalester-Groveland" value="Macalester-Groveland" v-model="neighborhoods">Macalester-Groveland</label>
-					<label for="Highland"><input type="checkbox" id="Highland" value="Highland" v-model="neighborhoods">Highland</label>
-					<label for="Summit Hill"><input type="checkbox" id="Summit Hill" value="Summit Hill" v-model="neighborhoods">Summit Hill</label>
-					<label for="Capitol River"><input type="checkbox" id="Capitol River" value="Capitol River" v-model="neighborhoods">Capitol River</label>
-				</div>
-				<button id="subbutton" type="button" class="button-primary" @click="search">submit</button>
-				<table id="table2">
-					<thead>
-						<tr>
-							<th v-for="head in tableHead">&nbsp;&nbsp;&nbsp;{{head}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-						</tr>
-					</thead>
-					<tbody>
-						
-						<tr v-for="data in tablelist">
-	
-							<td>{{data.date}}</td>
-							<td>{{data.time}}</td>
-							<td>{{data.code}}</td>
-							<td>{{data.incident}}</td>
-							<td>{{data.police_grid}}</td>
-							<td>{{data.neighborhood_number}}</td>
-							<td>{{data.block}}</td>					
-						</tr>
-					</tbody>
-				</table>
-				
-			</div>
+			<input class="search" v-model="message" placeholder= "enter" name="Map">
+			<button class="button-primary" type="button" @click="submit">Search</button>
 		</div>
 	</div>
+	
+	<div id="map"></div>
+	
+	<div class="container">
+		<div id="table">
+			<div class="datetime">
+				<input v-model="startdate" placeholder= "start date">
+				<input v-model="enddate" placeholder= "end date">
+				<input v-model="starttime" placeholder= "start time">
+				<input v-model="endtime" placeholder= "end time">
+			</div>
+			<div class="checkedbox">
+				<input type="checkbox" id="Vandalism" value="Vandalism" v-model="checkedNames"> Vandalism </input>
+				<input type="checkbox" id="Rape" value="Rape" v-model="checkedNames"> Rape </input>
+				<input type="checkbox" id="Robbery" value="Robbery" v-model="checkedNames"> Robbery </input>
+				<input type="checkbox" id="Agg. Assault" value="Agg. Assault" v-model="checkedNames"> Agg. Assault </input>
+				<input type="checkbox" id="Burglary" value="Burglary" v-model="checkedNames"> Burglary </input>
+				<input type="checkbox" id="Theft" value="Theft" v-model="checkedNames"> Theft </input>
+				<input type="checkbox" id="Auto Theft" value="Auto Theft" v-model="checkedNames"> Auto Theft </input>
+				<input type="checkbox" id="Narcotics" value="Narcotics" v-model="checkedNames"> Narcotics </input>
+				<input type="checkbox" id="Arson" value="Arson" v-model="checkedNames"> Arson </input>				
+				<input type="checkbox" id="Discharge" value="Discharge" v-model="checkedNames"> Discharge </input>
+				<input type="checkbox" id="Graffiti" value="Graffiti" v-model="checkedNames"> Graffiti </input>
+				<input type="checkbox" id="Homicide" value="Homicide" v-model="checkedNames"> Homicide </input>
+				<input type="checkbox" id="Other" value="Other" v-model="checkedNames"> Other </input>
+				<input type="checkbox" id="Proactive Police Visit" value="Proactive Police Visit" v-model="checkedNames"> Proactive Police Visit </input>
+				<input type="checkbox" id="Community Engagement Event" value="Community Engagement Event" v-model="checkedNames"> Community Engagement Event </input>
+				<input type="checkbox" id="Sample Asasult Dom" value="Sample Asasult Dom" v-model="checkedNames"> Sample Asasult Dom </input>
+				<input type="checkbox" id="Sample Assault Dom" value="Sample Assault Dom" v-model="checkedNames"> Sample Assault Dom </input>
+				<input type="checkbox" id="Agg. Assault Dom" value="Agg. Assault Dom" v-model="checkedNames"> Agg. Assault Dom </input>
+			</div>
+			<div class="checkedbox">
+				<input type="checkbox" id="Conway/Battlecreek/Highwood" value="Conway/Battlecreek/Highwood" v-model="neighborhoods"> Conway/Battlecreek/Highwood </input>
+				<input type="checkbox" id="Greater East Side" value="Greater East Side" v-model="neighborhoods"> Greater East Side </input>
+				<input type="checkbox" id="West Side" value="West Side" v-model="neighborhoods"> West Side </input>
+				<input type="checkbox" id="Dayton's Bluff" value="Dayton's Bluff" v-model="neighborhoods"> Dayton's Bluff </input>
+				<input type="checkbox" id="Payne/Phalen" value="Payne/Phalen" v-model="neighborhoods"> Payne/Phalen </input>
+				<input type="checkbox" id="North End" value="North End" v-model="neighborhoods"> North End </input>
+				<input type="checkbox" id="Thomas/Dale(Frogtown)" value="Thomas/Dale(Frogtown)" v-model="neighborhoods"> Thomas/Dale(Frogtown) </input>
+				<input type="checkbox" id="Summit/University" value="Summit/University" v-model="neighborhoods"> Summit/University </input>
+				<input type="checkbox" id="West Seventh" value="West Seventh" v-model="neighborhoods"> West Seventh </input>
+				<input type="checkbox" id="Como" value="Como" v-model="neighborhoods"> Como </input>
+				<input type="checkbox" id="Hamline/Midway" value="Hamline/Midway" v-model="neighborhoods"> Hamline/Midway </input>
+				<input type="checkbox" id="St. Anthony" value="St. Anthony" v-model="neighborhoods"> St. Anthony </input>
+				<input type="checkbox" id="Union Park" value="Union Park" v-model="neighborhoods"> Union Park </input>
+				<input type="checkbox" id="Macalester-Groveland" value="Macalester-Groveland" v-model="neighborhoods"> Macalester-Groveland </input>
+				<input type="checkbox" id="Highland" value="Highland" v-model="neighborhoods"> Highland </input>
+				<input type="checkbox" id="Summit Hill" value="Summit Hill" v-model="neighborhoods"> Summit Hill </input>
+				<input type="checkbox" id="Capitol River" value="Capitol River" v-model="neighborhoods"> Capitol River </input>
+			</div>
+			<button id="subbutton" type="button" class="button-primary" @click="search">Submit</button>
+			<table id="listcrime">
+				<thead>
+					<tr>
+						<th v-for="head in tableHead">&nbsp;&nbsp;&nbsp;{{head}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="data in tablelist" >
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Agg. Assault Dom'||data.incident=='Discharge'||data.incident=='Agg. Asasult Dom'||data.incident=='Sample Asasult Dom'||data.incident=='Agg. Assault'||data.incident=='Narcotics'" bgcolor='#9ce4ff'>{{data.date}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'||data.incident=='Auto Theft'||data.incident=='Graffiti'" bgcolor='#a8ffb0'>{{data.date}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'||data.incident=='Other'" bgcolor='#fa9f98'>{{data.date}}</td>
+						
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Agg. Assault Dom'||data.incident=='Discharge'||data.incident=='Agg. Asasult Dom'||data.incident=='Sample Asasult Dom'||data.incident=='Agg. Assault'||data.incident=='Narcotics'" bgcolor='#9ce4ff'>{{data.time}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'||data.incident=='Auto Theft'||data.incident=='Graffiti'" bgcolor='#a8ffb0'>{{data.time}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'||data.incident=='Other'" bgcolor='#fa9f98'>{{data.time}}</td>
+						
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Agg. Assault Dom'||data.incident=='Discharge'||data.incident=='Agg. Asasult Dom'||data.incident=='Sample Asasult Dom'||data.incident=='Agg. Assault'||data.incident=='Narcotics'" bgcolor='#9ce4ff'>{{data.code}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'||data.incident=='Auto Theft'||data.incident=='Graffiti'" bgcolor='#a8ffb0'>{{data.code}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'||data.incident=='Other'" bgcolor='#fa9f98'>{{data.code}}</td>	
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Agg. Assault Dom'||data.incident=='Discharge'||data.incident=='Agg. Asasult Dom'||data.incident=='Sample Asasult Dom'||data.incident=='Agg. Assault'||data.incident=='Narcotics'" bgcolor='#9ce4ff'>{{data.police_grid}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'||data.incident=='Auto Theft'||data.incident=='Graffiti'" bgcolor='#a8ffb0'>{{data.police_grid}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'||data.incident=='Other'" bgcolor='#fa9f98'>{{data.police_grid}}</td>
+						
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Agg. Assault Dom'||data.incident=='Discharge'||data.incident=='Agg. Asasult Dom'||data.incident=='Sample Asasult Dom'||data.incident=='Agg. Assault'||data.incident=='Narcotics'" bgcolor='#9ce4ff'>{{data.neighborhood_number}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'||data.incident=='Auto Theft'||data.incident=='Graffiti'" bgcolor='#a8ffb0'>{{data.neighborhood_number}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'||data.incident=='Other'" bgcolor='#fa9f98'>{{data.neighborhood_number}}</td>
+						
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Agg. Assault Dom'||data.incident=='Discharge'||data.incident=='Agg. Asasult Dom'||data.incident=='Sample Asasult Dom'||data.incident=='Agg. Assault'||data.incident=='Narcotics'" bgcolor='#9ce4ff'>{{data.block}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'||data.incident=='Auto Theft'||data.incident=='Graffiti'" bgcolor='#a8ffb0'>{{data.block}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'||data.incident=='Other'" bgcolor='#fa9f98'>{{data.block}}</td>							
+						
+						
+						<td >
+						 <button class="button-primary" v-on:click="selected.push(data)" @click = "addTo">mark</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="row">
+				<div class="three columns">
+					<div class="tuli" style="background-color:#9ce4ff;"><p>Violent Crimes</p></div>
+				</div>
+				<div  class="three columns">
+					<div class="tuli" style="background-color:#a8ffb0;"><p>Property Crimes</p></div>
+				</div>
+				<div class="three columns">
+					<div class="tuli" style="background-color:#fa9f98;"><p>Other Crimes</p></div>
+				</div>
+			</div> 
+
+		</div>
+    </div>
 </body>
 </html>
